@@ -23,13 +23,13 @@ class CreateProductFunctionalTest{
     @LocalServerPort
     private int serverPort;
 
-    @Value("${app.baseUrl:http://localhost:8080/product/list}")
+    @Value("${app.baseUrl:http://localhost}")
     private String testBaseUrl;
     private String baseUrl;
 
     @BeforeEach
     void setupTest() {
-        baseUrl = testBaseUrl;
+        baseUrl = String.format("%s:%d/product/list", testBaseUrl, serverPort);
     }
 
     @Test

@@ -85,6 +85,7 @@ class ProductRepositoryTest {
         assertEquals(product.getProductQuantity(), editedProduct.getProductQuantity());
     }
 
+    // Null assertion if product doesn't exist while being edited
     @Test
     void testEditIfProductNotFound(){
         Product product = new Product();
@@ -93,6 +94,7 @@ class ProductRepositoryTest {
         assertNull(productNotExist);
     }
 
+    // This delete test re-assure if the product is already null
     @Test
     void testDeleteProduct(){
         Product product = new Product();

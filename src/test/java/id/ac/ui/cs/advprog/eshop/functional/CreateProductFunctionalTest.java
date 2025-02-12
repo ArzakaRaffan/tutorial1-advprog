@@ -32,6 +32,7 @@ class CreateProductFunctionalTest{
         baseUrl = String.format("%s:%d/product/list", testBaseUrl, serverPort);
     }
 
+    //Made a product with functional test and check if its already in the list table of products
     @Test
     void testCreateProductFunctional(ChromeDriver driver) throws Exception{
         driver.get(baseUrl);

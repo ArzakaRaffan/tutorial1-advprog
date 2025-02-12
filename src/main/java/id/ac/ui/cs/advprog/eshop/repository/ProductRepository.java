@@ -12,6 +12,12 @@ public class ProductRepository{
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product){
+        if (product.getProductQuantity() <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero.");
+        }
+        if (product.getProductName() == null || product.getProductName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty.");
+        }
         productData.add(product);
         return product;
     }
@@ -33,6 +39,12 @@ public class ProductRepository{
         Product existProduct = findById(product.getProductId());
         if(existProduct != null){
             int index  = productData.indexOf(existProduct);
+            if (product.getProductQuantity() <= 0) {
+                throw new IllegalArgumentException("Quantity must be greater than zero.");
+            }
+            if (product.getProductName() == null || product.getProductName().trim().isEmpty()) {
+                throw new IllegalArgumentException("Product name cannot be null or empty.");
+            }
             productData.set(index, product);
             return product;
         }

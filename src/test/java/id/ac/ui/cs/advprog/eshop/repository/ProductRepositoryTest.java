@@ -107,4 +107,67 @@ class ProductRepositoryTest {
         productRepository.delete(product.getProductId());
         assertNull(productRepository.findById(product.getProductId()));
     }
+
+    @Test
+    void testCreateProductWithZeroQuantity(){
+        Product product = new Product();
+        product.setProductId("12345");
+        product.setProductName("Invalid Product");
+        product.setProductQuantity(0);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.create(product);
+        });
+
+        assertEquals("Quantity must be greater than zero.", exception.getMessage());
+    }
+
+    @Test
+    void testCreateProductWithNullName() {
+        Product product = new Product();
+        product.setProductId("12347");
+        product.setProductName(null);
+        product.setProductQuantity(10);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.create(product);
+        });
+
+        assertEquals("Product name cannot be null or empty.", exception.getMessage());
+    }
+
+    @Test
+    void testEditProductWithZeroQuantity() {
+        Product product = new Product();
+        product.setProductId("edit123");
+        product.setProductName("Valid Product");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        product.setProductQuantity(0); // Invalid update
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.edit(product);
+        });
+
+        assertEquals("Quantity must be greater than zero.", exception.getMessage());
+    }
+
+    @Test
+    void testEditProductWithNullName() {
+        Product product = new Product();
+        product.setProductId("edit125");
+        product.setProductName("Valid Product");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        product.setProductName(null); // Invalid update
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.edit(product);
+        });
+
+        assertEquals("Product name cannot be null or empty.", exception.getMessage());
+    }
+
 }

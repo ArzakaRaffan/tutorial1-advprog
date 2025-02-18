@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EshopApplicationTests {
+public class EshopApplicationTests {
 
     @Test
-    void contextLoads() {
+    void mainMethodTest() {
+        EshopApplication.main(new String[] {});
     }
-
 }

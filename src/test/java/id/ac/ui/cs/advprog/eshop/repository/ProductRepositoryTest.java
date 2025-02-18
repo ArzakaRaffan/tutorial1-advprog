@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Iterator;
 
@@ -67,7 +66,7 @@ class ProductRepositoryTest {
     @Test
     void testEditProduct(){
         Product product = new Product();
-        product.setProductId("eb558e9f-1c39-460e-8868-71af6af63bd6");
+        product.setProductId("eb558e9f-1c39-460e-8868-71af6af63bd6a");
         product.setProductName("Sampo Cap Bambang");
         product.setProductQuantity(100);
         productRepository.create(product);
@@ -76,9 +75,7 @@ class ProductRepositoryTest {
         product.setProductQuantity(150);
         productRepository.edit(product);
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertTrue(productIterator.hasNext());
-        Product editedProduct = productIterator.next();
+        Product editedProduct = productRepository.findById("eb558e9f-1c39-460e-8868-71af6af63bd6a");
 
         assertEquals(product.getProductId(), editedProduct.getProductId());
         assertEquals(product.getProductName(), editedProduct.getProductName());
@@ -111,7 +108,7 @@ class ProductRepositoryTest {
     @Test
     void testCreateProductWithZeroQuantity(){
         Product product = new Product();
-        product.setProductId("12345");
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
         product.setProductName("Invalid Product");
         product.setProductQuantity(0);
 
@@ -125,8 +122,22 @@ class ProductRepositoryTest {
     @Test
     void testCreateProductWithNullName() {
         Product product = new Product();
-        product.setProductId("12347");
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
         product.setProductName(null);
+        product.setProductQuantity(10);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.create(product);
+        });
+
+        assertEquals("Product name cannot be null or empty.", exception.getMessage());
+    }
+
+    @Test
+    void testCreateProductWithNoName() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
+        product.setProductName("");
         product.setProductQuantity(10);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -139,7 +150,7 @@ class ProductRepositoryTest {
     @Test
     void testEditProductWithZeroQuantity() {
         Product product = new Product();
-        product.setProductId("edit123");
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
         product.setProductName("Valid Product");
         product.setProductQuantity(10);
         productRepository.create(product);
@@ -156,7 +167,7 @@ class ProductRepositoryTest {
     @Test
     void testEditProductWithNullName() {
         Product product = new Product();
-        product.setProductId("edit125");
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
         product.setProductName("Valid Product");
         product.setProductQuantity(10);
         productRepository.create(product);
@@ -168,6 +179,49 @@ class ProductRepositoryTest {
         });
 
         assertEquals("Product name cannot be null or empty.", exception.getMessage());
+    }
+
+    @Test
+    void testEditProductWithNoName() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
+        product.setProductName("Valid Product");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        product.setProductName(""); // Invalid update
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.edit(product);
+        });
+
+        assertEquals("Product name cannot be null or empty.", exception.getMessage());
+    }
+
+    @Test
+    void testfindById(){
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
+        product.setProductName("Valid Product");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        Product findByIdProduct = productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6a");
+        assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6a", findByIdProduct.getProductId());
+        assertEquals("Valid Product", findByIdProduct.getProductName());
+        assertEquals(10, findByIdProduct.getProductQuantity());
+    }
+
+    @Test
+    void testFindByIdIfIdNotExists(){
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6a");
+        product.setProductName("Invalid product");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        Product findByIdProduct = productRepository.findById("Invalid ID");
+        assertNull(findByIdProduct);
     }
 
 }

@@ -37,5 +37,5 @@ Pembuatan Java class yang sama dengan functional test utama tersebut dapat mengu
 
 > Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
 
-Menurut saya, CI/CD Workflow yang saya buat sudah memenuhi definisi _Continuous Integration and Continuous Deployment_. Continuous Integration saya terletak pada file `ci.yml` yang melakukan build dan unit test secara otomatis setiap kali terdapat push dan juga pull request. Lalu dalam Continuous deployment, saya menggunakan service _koyeb_ yang akan melakukan deployment setiap kali ada push atau pull di branch _master_.
+Menurut saya, CI/CD Workflow yang saya buat sudah memenuhi definisi _Continuous Integration and Continuous Deployment_. Continuous Integration saya terletak pada file `ci.yml` yang melakukan build dan unit test secara otomatis setiap kali terdapat push dan juga pull request. Kemudian saya juga mengintegrasikan `Scorecard` dan `PMD` untuk tetap mengevaluasi security issue yang muncul setiap kali ada perubahan dalam kode. Lalu dalam Continuous deployment, saya menggunakan service _koyeb_ yang akan melakukan deployment setiap kali ada push atau pull di branch _master_.
 
